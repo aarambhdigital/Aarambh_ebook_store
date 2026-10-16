@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Aarambh Ebook Store</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600&family=Nunito:wght@400;700&display=swap">
+<style>
+:root{--bg:#fff;--ink:#1f2a44;--muted:#5b6580;--card:#f4f7ff;--line:#dbe2f3;--yellow:#ffd84d;--red:#e8563f;--green:#2fa77a;--on-accent:#1f2a44;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121829;--ink:#f1f4ff;--muted:#a3adc7;--card:#1b2340;--line:#2d3860}}
+:root[data-theme="dark"]{--bg:#121829;--ink:#f1f4ff;--muted:#a3adc7;--card:#1b2340;--line:#2d3860}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.55 Nunito,system-ui,sans-serif}
+h1,h2,h3{font-family:Fredoka,system-ui,sans-serif;font-weight:600;margin:0;line-height:1.15}
+.wrap{max-width:960px;margin:0 auto;padding:0 18px}
+header{background:var(--yellow);color:#1f2a44;padding:36px 0 30px}
+header h1{font-size:clamp(2rem,7vw,3.4rem);max-width:12ch}
+header p{max-width:42ch;margin:12px 0 0;font-size:1.1rem}
+.bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:space-between;padding:18px 0}
+.tabs{display:flex;gap:8px;flex-wrap:wrap}
+button{font:inherit;cursor:pointer;border:2px solid var(--ink);background:transparent;color:var(--ink);border-radius:999px;padding:8px 16px;font-weight:700}
+button:focus-visible{outline:3px solid var(--red);outline-offset:2px}
+.tabs button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.cartbtn{display:none;background:var(--red);border-color:var(--red);color:#fff}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:20px;padding-bottom:40px}
+.book{background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden;display:flex;flex-direction:column}
+.cover{height:170px;display:flex;align-items:center;justify-content:center;font-size:64px;position:relative}
+.cover span.tag{position:absolute;top:10px;left:10px;background:#fff;color:#1f2a44;font-size:.8rem;font-weight:700;padding:2px 10px;border-radius:999px}
+.info{padding:14px 16px 16px;display:flex;flex-direction:column;gap:8px;flex:1}
+.info h3{font-size:1.2rem}
+.info p{margin:0;color:var(--muted);font-size:.95rem;flex:1}
+.row{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.price{font:600 1.3rem Fredoka,sans-serif}
+.btns{display:flex;gap:8px}
+.btns button{padding:6px 14px;font-size:.95rem}
+.buy{background:var(--green);border-color:var(--green);color:#fff}
+dialog{border:0;border-radius:20px;max-width:min(520px,92vw);width:100%;background:var(--bg);color:var(--ink);padding:24px}
+dialog::backdrop{background:rgba(10,15,30,.6)}
+.sample{border:2px dashed var(--line);border-radius:14px;padding:14px;margin:14px 0;position:relative;max-height:220px;overflow:hidden}
+.sample::after{content:"";position:absolute;left:0;right:0;bottom:0;height:90px;background:linear-gradient(transparent,var(--bg))}
+.sample p{margin:0 0 8px}
+.lines span{display:block;border-bottom:2px dotted var(--line);height:26px}
+ul.cart{list-style:none;padding:0;margin:14px 0}
+ul.cart li{display:flex;justify-content:space-between;gap:8px;padding:8px 0;border-bottom:1px solid var(--line)}
+.total{font:600 1.3rem Fredoka,sans-serif;display:flex;justify-content:space-between}
+.note{color:var(--muted);font-size:.9rem}
+#toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:999px;opacity:0;pointer-events:none;transition:opacity .2s}
+#toast.on{opacity:1}
+.fi{font:inherit;padding:9px 12px;border-radius:12px;border:2px solid var(--line);background:var(--bg);color:var(--ink)}
+.picks{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px}
+.box ul{margin:0;padding-left:18px;color:var(--muted)}
+.disc{font-size:.85rem;color:var(--muted);margin-top:12px}
+section.s{padding:34px 0;border-top:1px solid var(--line)}
+section.s>h2{font-size:1.7rem;margin-bottom:6px}
+section.s>.note{margin:0 0 18px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
+.box{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;display:flex;flex-direction:column;gap:8px}
+.box.best{border:3px solid var(--yellow)}
+.box .was{text-decoration:line-through;color:var(--muted);font-size:.9rem}
+.box p{margin:0;color:var(--muted)}
+.who{font-weight:700;color:var(--ink)!important}
+details{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 16px;margin-bottom:10px}
+summary{cursor:pointer;font-weight:700}
+details p{margin:8px 0 0;color:var(--muted)}
+.sub{display:flex;gap:8px;flex-wrap:wrap}
+.sub input{flex:1;min-width:200px;font:inherit;padding:10px 14px;border-radius:999px;border:2px solid var(--ink);background:var(--bg);color:var(--ink)}
+footer{padding:26px 0 40px;border-top:1px solid var(--line);color:var(--muted);font-size:.9rem}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+<h1>Ebooks and printables for everyday life.</h1>
+<p>Download instantly, read on any phone or computer, and print at home.</p>
+</div></header>
+
+<main class="wrap">
+<div class="bar">
+<div class="tabs" role="group" aria-label="Filter books">
+<button data-f="all" aria-pressed="true">All</button>
+<button data-f="recipes" aria-pressed="false">Recipes</button>
+<button data-f="worksheets" aria-pressed="false">Kids worksheets</button>
+<button data-f="planners" aria-pressed="false">Planners</button>
+<button data-f="stories" aria-pressed="false">Stories</button>
+</div>
+<button class="cartbtn" id="cartBtn">Cart (<span id="count">0</span>)</button>
+</div>
+<div class="grid" id="grid"></div>
+<section class="s" id="bundles"><h2>Save with a bundle</h2><p class="note">Get more books for less.</p>
+<div class="cards">
+<div class="box"><h3>Recipe bundle</h3><p>Every recipe book</p><span class="was" data-b="recipes"></span><span class="price" data-bp="recipes"></span><button class="buy" onclick="buy('bundle_recipes')">Buy bundle</button></div>
+<div class="box best"><h3>Everything bundle</h3><p>Every recipe and worksheet book</p><span class="was" data-b="all"></span><span class="price" data-bp="all"></span><button class="buy" onclick="buy('bundle_all')">Buy bundle</button></div>
+<div class="box"><h3>Worksheet bundle</h3><p>Every preschool worksheet book</p><span class="was" data-b="worksheets"></span><span class="price" data-bp="worksheets"></span><button class="buy" onclick="buy('bundle_worksheets')">Buy bundle</button></div>
+</div></section>
+
+<section class="s" id="plans"><h2>Join the monthly club</h2><p class="note">New recipes and worksheets every month. Cancel any time.</p>
+<div class="cards">
+<div class="box"><h3>Monthly</h3><span class="price">$5.99 / month</span><ul><li>4 new recipes each month</li><li>4 new worksheets each month</li><li>20% off new ebooks</li></ul><button class="buy" onclick="buy('sub_monthly')">Start monthly plan</button></div>
+<div class="box best"><h3>Yearly</h3><span class="was">$71.88</span><span class="price">$49.00 / year</span><ul><li>Everything in monthly</li><li>Early access to new books</li><li>Save about 32%</li></ul><button class="buy" onclick="buy('sub_yearly')">Start yearly plan</button></div>
+</div></section>
+
+<section class="s" id="picks"><h2>Kitchen and classroom picks</h2><p class="note">Tools we use with our recipes and worksheets.</p>
+<div class="picks">
+<div class="box"><h3>🍪 Non-stick baking tray</h3><p>For muffins, cookies and bakes.</p><button onclick="aff('tray')">View product</button></div>
+<div class="box"><h3>🥪 Leak-proof lunchbox set</h3><p>Fits the lunchbox recipes.</p><button onclick="aff('lunchbox')">View product</button></div>
+<div class="box"><h3>✂️ Safety scissors for kids</h3><p>For cut and paste worksheets.</p><button onclick="aff('scissors')">View product</button></div>
+<div class="box"><h3>🔴 Dot marker set</h3><p>For dot marker activities.</p><button onclick="aff('dots')">View product</button></div>
+</div>
+<p class="disc">Some links are affiliate links. If you buy through them, we may earn a small commission at no extra cost to you.</p></section>
+
+<section class="s" id="partners"><h2>Earn by sharing our ebooks</h2><p class="note">Teachers, parents and food bloggers earn 30% on every sale they refer.</p>
+<div class="cards">
+<div class="box"><h3>1. Apply</h3><p>Tell us where you share, such as a blog, YouTube, Instagram, or classroom group.</p></div>
+<div class="box"><h3>2. Share</h3><p>Get your own referral link and post it with the books you like.</p></div>
+<div class="box"><h3>3. Get paid</h3><p>Earn 30% of each sale made through your link, paid monthly.</p></div>
+</div>
+<div class="box" style="margin-top:16px"><h3>Estimate your earnings</h3>
+<div class="sub"><input id="as" type="number" min="0" placeholder="Sales per month" aria-label="Sales per month"><input id="ap" type="number" min="0" step="0.01" placeholder="Average book price, e.g. 7" aria-label="Average book price"></div>
+<p class="price" id="ae">Enter your numbers to see your monthly earnings.</p>
+<button class="buy" onclick="joinAff()">Apply to join</button></div></section>
+
+<section class="s" id="reviews"><h2>What parents and cooks say</h2><p class="note">Sample reviews. Replace them with your real customer feedback.</p>
+<div class="cards">
+<div class="box"><p>My 4-year-old asks for the tracing pages every morning. Printing was easy.</p><p class="who">Priya, parent of two</p></div>
+<div class="box"><p>The lunchbox ideas saved me so much planning time. Simple ingredients, great results.</p><p class="who">Daniel, home cook</p></div>
+<div class="box"><p>Clear steps and photos made my first batch of muffins turn out perfectly.</p><p class="who">Amira, beginner baker</p></div>
+</div></section>
+
+<section class="s" id="faq"><h2>Questions</h2>
+<details><summary>How do I get my ebook?</summary><p>You get a download link right after payment, and a copy by email.</p></details>
+<details><summary>Can I print the books?</summary><p>Yes. Print them for your own use.</p></details>
+<details><summary>What format are the files?</summary><p>PDF, which opens on any phone, tablet, or computer.</p></details>
+<details><summary>Do you offer refunds?</summary><p>Digital files can't be returned, but contact us if something is wrong and we'll fix it.</p></details>
+</section>
+
+<section class="s" id="news"><h2>Get a free printable</h2><p class="note">Join the list for one free worksheet page and new recipes each month.</p>
+<div class="sub"><input id="email" type="email" placeholder="Your email" aria-label="Email address"><button class="buy" onclick="subscribe()">Send my free page</button></div></section>
+</main>
+<footer><div class="wrap">Aarambh Ebook Store. <button style="padding:2px 12px;font-size:.85rem" onclick="manage()">Manage books</button></div></footer>
+
+<dialog id="preview"></dialog>
+<dialog id="cartDlg"></dialog>
+<div id="toast" role="status"></div>
+
+<script>
+var BOOKS=[
+{id:1,cat:"recipes",t:"10 Easy Raita Recipes",d:"Ten simple, refreshing raitas for everyday meals, pulao, biryani and parathas. From classic Boondi Raita to Mint Raita.",p:49,e:"🥣",c:"#ffe08a",pages:"16 pages",s:["Boondi Raita","Serves 3-4 · 10 min · No cooking","Whisk thick curd until smooth. Add roasted cumin, red chilli, black salt and salt, then gently mix in the boondi. Garnish with coriander and chill for 10-15 minutes."]},
+{id:2,cat:"worksheets",t:"Preschool Kids Tracing Worksheets",d:"Twenty fun tracing pages that build fine motor skills and handwriting: lines, zigzags, curves, loops, shapes and connect-the-dots.",p:99,e:"✏️",c:"#b9d4ff",pages:"20 worksheets",s:["Standing lines","Trace the standing lines from top to bottom.","┆ ┆ ┆ ┆ ┆"]},
+{id:3,cat:"planners",t:"Weekly Planner",d:"A printable planner with a weekly reset, goals, week at a glance, daily plan, habit tracker, meal plan, self-care and weekly review.",p:99,e:"📅",c:"#c9e4c5",pages:"13 pages",s:["My week at a glance","Write each day's top priority and tasks.","MON TUE WED"]},
+{id:4,cat:"worksheets",t:"Preschool Drawing Worksheets",d:"Cute animal and everyday-scene coloring and drawing pages for little hands, with a certificate of achievement at the end.",p:119,e:"🎨",c:"#ffd9d0",pages:"24 pages",s:["Little Hands, Big Imagination","Pick your favorite crayons and color the picture.","🐰 🦁 🐘 🦉"]},
+{id:5,cat:"stories",t:"Bedtime Stories for Kids",d:"Gentle bedtime stories for sleepy little ones.",p:129,e:"🌙",c:"#d8d4ff",pages:"Ebook",s:["Bedtime Stories","A calm story for sleepy little ones.","🌙 ⭐ 🧸"]}];
+// Paste your Razorpay payment links here, for example: PAY[1]="https://rzp.io/l/yourlink";
+var PAY={1:"https://payhip.com/b/etgHK",2:"https://payhip.com/b/um6Ef",3:"https://payhip.com/b/5ARn4",4:"https://payhip.com/b/P8pZG",5:"https://payhip.com/b/hN18q",bundle_recipes:"",bundle_all:"",bundle_worksheets:"",sub_monthly:"",sub_yearly:""};
+// Paste affiliate links here, for example: AFF.tray="https://...";
+var AFF={tray:"",lunchbox:"",scissors:"",dots:""};
+function aff(k){if(!AFF[k]){toast("Product link not added yet");return}window.open(AFF[k],"_blank","noopener,sponsored")}
+function buy(k){var b=typeof k=="number"?find(k):null,u=PAY[k]||(b&&b.u);if(!u){toast("Coming soon. Please check back shortly.");return}window.open(u,"_blank","noopener")}
+var cart=[],filter="all",$=function(i){return document.getElementById(i)};
+function money(n){return "₹"+(n%1?n.toFixed(2):n)}
+function toast(m){var t=$("toast");t.textContent=m;t.className="on";setTimeout(function(){t.className=""},2000)}
+function render(){
+ $("grid").innerHTML=BOOKS.filter(function(b){return filter=="all"||b.cat==filter}).map(function(b){
+  return '<article class="book"><div class="cover" style="background:'+b.c+'"><span class="tag">'+lab(b.cat)+'</span>'+b.e+'</div><div class="info"><h3>'+b.t+'</h3><p>'+b.d+' '+b.pages+'.</p><div class="row"><span class="price">'+money(b.p)+'</span><div class="btns"><button onclick="preview('+b.id+')">Free sample</button><button class="buy" onclick="buy('+b.id+')">'+(PAY[b.id]||b.u?"Buy now":"Coming soon")+'</button></div></div></div></article>'}).join("");
+ $("count").textContent=cart.length;priceBundles()}
+function priceBundles(){["recipes","worksheets","all"].forEach(function(c){var t=BOOKS.reduce(function(a,b){return a+((c=="all"||b.cat==c)?b.p:0)},0),w=document.querySelector("[data-b="+c+"]"),r=document.querySelector("[data-bp="+c+"]");if(w){w.textContent=money(t);r.textContent=money(Math.round(t*0.7)-0.01)}})}
+var LABEL={recipes:"Recipes",worksheets:"Kids worksheets",planners:"Planners",stories:"Stories"};
+function lab(c){return LABEL[c]||(c.charAt(0).toUpperCase()+c.slice(1))}
+function buildTabs(){var cats=[];BOOKS.forEach(function(b){if(cats.indexOf(b.cat)<0)cats.push(b.cat)});var t=document.querySelector(".tabs");if(filter!="all"&&cats.indexOf(filter)<0)filter="all";t.innerHTML=["all"].concat(cats).map(function(c){return '<button data-f="'+c+'" aria-pressed="'+(c==filter)+'">'+(c=="all"?"All":lab(c))+"</button>"}).join("");t.querySelectorAll("button").forEach(function(b){b.onclick=function(){filter=b.dataset.f;buildTabs();render()}});t.style.display=cats.length<2?"none":""}
+function find(id){return BOOKS.filter(function(b){return b.id==id})[0]}
+function add(id){if(cart.indexOf(id)>-1){toast("Already in your cart");return}cart.push(id);render();toast("Added to cart")}
+function preview(id){var b=find(id),body=b.cat=="recipes"?'<p><b>'+b.s[0]+'</b></p><p class="note">'+b.s[1]+'</p><p>'+b.s[2]+'</p><p>Next, season to taste and let it rest for a few minutes before serving to the whole family.</p>':'<p><b>'+b.s[0]+'</b></p><p class="note">'+b.s[1]+'</p><p style="font-size:2rem;letter-spacing:6px">'+b.s[2]+'</p><div class="lines"><span></span><span></span><span></span></div>';
+ var d=$("preview");d.innerHTML='<h2>'+b.t+'</h2><p class="note">Free sample page</p><div class="sample">'+body+'</div><div class="row"><span class="price">'+money(b.p)+'</span><div class="btns"><button onclick="this.closest(\'dialog\').close()">Close</button><button class="buy" onclick="buy('+b.id+')">Buy full ebook</button></div></div>';d.showModal()}
+function showCart(){var d=$("cartDlg"),sum=0;
+ var items=cart.map(function(id){var b=find(id);sum+=b.p;return '<li><span>'+b.e+' '+b.t+'</span><span>'+money(b.p)+' <button style="padding:0 8px" aria-label="Remove '+b.t+'" onclick="rm('+id+')">×</button></span></li>'}).join("");
+ d.innerHTML='<h2>Your cart</h2>'+(cart.length?'<ul class="cart">'+items+'</ul><div class="total"><span>Total</span><span>'+money(sum)+'</span></div><p class="note">Buy 3 or more and add your bundle discount at checkout.</p><div class="btns"><button onclick="this.closest(\'dialog\').close()">Keep browsing</button><button class="buy" onclick="toast(\'Connect your payment link to enable checkout\')">Checkout</button></div>':'<p>Your cart is empty. Open a free sample, then add the books you like.</p><button onclick="this.closest(\'dialog\').close()">Browse books</button>');
+ if(!d.open)d.showModal()}
+function rm(id){cart=cart.filter(function(x){return x!=id});render();showCart()}
+function bundle(c){BOOKS.forEach(function(b){if((c=="all"||b.cat==c)&&cart.indexOf(b.id)<0)cart.push(b.id)});render();toast("Bundle added. Discount applies at checkout")}
+function subscribe(){var v=$("email").value;if(v.indexOf("@")<1){toast("Enter a valid email address");return}$("email").value="";toast("Thanks! Connect your email tool to send the free page")}
+function save(){try{localStorage.setItem("books_v6",JSON.stringify(BOOKS))}catch(e){}}
+try{var saved=JSON.parse(localStorage.getItem("books_v6")||"null");if(saved&&saved.length)BOOKS=saved}catch(e){}
+function manage(){var d=$("cartDlg");
+ var list=BOOKS.map(function(b){return '<li><span>'+b.e+' '+b.t+' ('+money(b.p)+')</span><button style="padding:0 8px" aria-label="Delete '+b.t+'" onclick="del('+b.id+')">×</button></li>'}).join("");
+ d.innerHTML='<h2>Manage books</h2><p class="note">Changes are saved in this browser only. Send them to Claude to publish for customers.</p><div style="display:grid;gap:8px"><input id="nt" placeholder="Book title" class="fi"><input id="nc" list="cats" placeholder="Category, e.g. Recipes" class="fi"><datalist id="cats"><option value="recipes"><option value="worksheets"><option value="planners"><option value="stories"></datalist><input id="np" type="number" step="0.01" placeholder="Price, e.g. 7.99" class="fi"><input id="nd" placeholder="Short description" class="fi"><input id="ne" placeholder="Emoji cover, e.g. 🥗" class="fi"><input id="nu" placeholder="Razorpay payment link" class="fi"><button class="buy" onclick="addBook()">Add book</button></div><ul class="cart">'+list+'</ul><button onclick="this.closest(\'dialog\').close()">Close</button>';
+ if(!d.open)d.showModal()}
+function addBook(){var t=$("nt").value.trim(),p=parseFloat($("np").value);if(!t||!(p>0)){toast("Enter a title and a price");return}
+ var c=($("nc").value.trim().toLowerCase()||"ebooks"),id=BOOKS.reduce(function(m,b){return Math.max(m,b.id)},0)+1;
+ BOOKS.push({id:id,cat:c,t:t,d:$("nd").value.trim()||"New ebook.",p:p,e:$("ne").value.trim()||"📖",c:"#dfe6ff",pages:"New",u:$("nu").value.trim(),s:[t,"Sample page","Add your sample text here."]});
+ save();buildTabs();render();manage();toast("Book added")}
+function del(id){BOOKS=BOOKS.filter(function(b){return b.id!=id});cart=cart.filter(function(x){return x!=id});save();buildTabs();render();manage()}
+var JOIN="";// Add your form link or mailto here, for example: JOIN="mailto:you@example.com?subject=Affiliate application";
+function joinAff(){if(!JOIN){toast("Application link not added yet");return}window.open(JOIN,"_blank","noopener")}
+function calcAff(){var n=parseFloat($("as").value),p=parseFloat($("ap").value);$("ae").textContent=(n>=0&&p>=0)?"You could earn "+money(n*p*0.3)+" a month":"Enter your numbers to see your monthly earnings."}
+["as","ap"].forEach(function(i){$(i).addEventListener("input",calcAff)});
+$("cartBtn").onclick=showCart;
+document.querySelectorAll(".tabs button").forEach(function(b){b.onclick=function(){filter=b.dataset.f;document.querySelectorAll(".tabs button").forEach(function(x){x.setAttribute("aria-pressed",x==b)});render()}});
+function applyConfig(){
+ function hide(id,on){var e=$(id);if(e&&!on)e.style.display="none"}
+ function any(o,keys){return keys.some(function(k){return o[k]})}
+ hide("bundles",any(PAY,["bundle_recipes","bundle_all","bundle_worksheets"]));
+ hide("plans",any(PAY,["sub_monthly","sub_yearly"]));
+ hide("picks",any(AFF,["tray","lunchbox","scissors","dots"]));
+ hide("partners",!!JOIN);
+ hide("reviews",false); /* shown only once you have real customer reviews */
+ hide("news",false); /* shown only once an email tool is connected */
+}
+buildTabs();render();applyConfig();
+</script>
+</body>
+</html>
