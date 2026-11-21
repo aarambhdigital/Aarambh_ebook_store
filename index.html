@@ -181,7 +181,7 @@ nav.top button{padding:4px 12px;font-size:.9rem}
 <div class="box"><p>Clear steps and photos made my first batch of muffins turn out perfectly.</p><p class="who">Amira, beginner baker</p></div>
 </div></section>
 <section class="s" id="contact"><h2>Contact us</h2><p class="note">Questions about an order or a file? Message us and we will help.</p>
-<div class="btns"><button class="buy" id="cmail" onclick="window.open('mailto:'+CONTACT_EMAIL+'?subject=Aarambh%20Ebook%20Store')">Email us</button><button id="cwa" onclick="window.open('https://wa.me/'+WHATSAPP,'_blank','noopener')">WhatsApp us</button></div><p class="note" style="margin-top:16px">Be one of our first followers. We are just beginning.</p><div class="btns" style="flex-wrap:wrap"><button onclick="window.open('https://x.com/Aarambhdigital_','_blank','noopener')">X</button><button onclick="window.open('https://www.instagram.com/aarambhdigitalresources','_blank','noopener')">Instagram</button><button onclick="window.open('https://www.facebook.com/share/1F6fueZ3ij/','_blank','noopener')">Facebook</button></div></section>
+<div class="btns"><button class="buy" id="cmail" onclick="window.open('mailto:'+CONTACT_EMAIL+'?subject=Aarambh%20Ebook%20Store')">Email us</button><button id="cwa" onclick="go('https://wa.me/'+WHATSAPP)">WhatsApp us</button></div><p class="note" style="margin-top:16px">Be one of our first followers. We are just beginning.</p><div class="btns" style="flex-wrap:wrap"><button onclick="go('https://x.com/Aarambhdigital_')">X</button><button onclick="go('https://www.instagram.com/aarambhdigitalresources')">Instagram</button><button onclick="go('https://www.facebook.com/share/1F6fueZ3ij/')">Facebook</button></div></section>
 <section class="s" id="faq"><h2>Questions</h2>
 <details><summary>How do I get my ebook?</summary><p>You get a download link right after payment, and a copy by email.</p></details>
 <details><summary>Can I print the books?</summary><p>Yes. Print them for your own use.</p></details>
@@ -229,8 +229,9 @@ var BOOKS=[
 var STARTER_PRICE=349;// bundle price in rupees; the card shows only after PAY.bundle_starter has a Payhip link
 var PAY={1:"https://payhip.com/b/etgHK",2:"https://payhip.com/b/um6Ef",3:"https://payhip.com/b/5ARn4",4:"https://payhip.com/b/P8pZG",5:"https://payhip.com/b/hN18q",6:"https://payhip.com/b/5jEsJ",7:"https://payhip.com/b/m6IQx",8:"https://payhip.com/b/6O5xd",9:"https://payhip.com/b/eDrV3",10:"https://payhip.com/b/6SGL8",11:"https://payhip.com/b/dFrH7",12:"https://payhip.com/b/JILoY",13:"https://payhip.com/b/kTFD1",14:"https://payhip.com/b/rqZ0l",15:"https://payhip.com/b/w28nV",16:"https://payhip.com/b/Etyix",17:"https://payhip.com/b/VZY2R",18:"https://payhip.com/b/cHZ9k",19:"https://payhip.com/b/9DQYv",20:"https://payhip.com/b/AUMg0",21:"https://payhip.com/b/14gHS",22:"https://payhip.com/b/09znw",23:"https://payhip.com/b/Hw0Ap",24:"https://payhip.com/b/8B3pw",25:"https://payhip.com/b/2Wm64",26:"https://payhip.com/b/7oeCA",27:"https://payhip.com/b/hSNps",bundle_starter:"",bundle_recipes:"",bundle_all:"",bundle_worksheets:"",sub_monthly:"",sub_yearly:""};
 var AFF={tray:"",lunchbox:"",scissors:"",dots:""};
-function aff(k){if(!AFF[k]){toast("Product link not added yet");return}window.open(AFF[k],"_blank","noopener,sponsored")}
-function buy(k){var b=typeof k=="number"?find(k):null,u=PAY[k]||(b&&b.u);if(!u){toast("Coming soon. Please check back shortly.");return}window.open(u,"_blank","noopener")}
+function go(u){try{var a=document.createElement("a");a.href=u;a.target="_blank";a.rel="noopener noreferrer";a.style.display="none";document.body.appendChild(a);a.click();setTimeout(function(){a.remove()},500)}catch(e){location.href=u}}
+function aff(k){if(!AFF[k]){toast("Product link not added yet");return}go(AFF[k])}
+function buy(k){var b=typeof k=="number"?find(k):null,u=PAY[k]||(b&&b.u);if(!u){toast("Coming soon. Please check back shortly.");return}go(u)}
 function needSignIn(){var u=null;try{u=localStorage.getItem("aar_user")}catch(x){}return !u}
 var q="",cart=[],filter="all",$=function(i){return document.getElementById(i)};
 function money(n){return "₹"+(n%1?n.toFixed(2):n)}
@@ -278,7 +279,7 @@ BOOKS.push({id:id,cat:c,t:t,d:$("nd").value.trim()||"New ebook.",p:p,e:$("ne").v
 save();buildTabs();render();manage();toast("Book added")}
 function del(id){BOOKS=BOOKS.filter(function(b){return b.id!=id});cart=cart.filter(function(x){return x!=id});save();buildTabs();render();manage()}
 var JOIN="";// Add your form link or mailto here, for example: JOIN="mailto:you@example.com?subject=Affiliate application";
-function joinAff(){if(!JOIN){toast("Application link not added yet");return}window.open(JOIN,"_blank","noopener")}
+function joinAff(){if(!JOIN){toast("Application link not added yet");return}go(JOIN)}
 function calcAff(){var n=parseFloat($("as").value),p=parseFloat($("ap").value);$("ae").textContent=(n>=0&&p>=0)?"You could earn "+money(n*p*0.3)+" a month":"Enter your numbers to see your monthly earnings."}
 ["as","ap"].forEach(function(i){$(i).addEventListener("input",calcAff)});
 $("cartBtn").onclick=showCart;
